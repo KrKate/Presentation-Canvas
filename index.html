@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Canvas</title>
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
@@ -16,8 +16,169 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+					<h1>Canvas</h1>
+				</section>
+				<section>
+					<h3>Canvas</h3>
+					<p>The Canvas API allows you to draw graphics using JavaScript and the HTML canvas element.
+It can be used for various purposes like creating animations, games, visualizing data, editing photos, and processing real-time videos.</p>
+				</section>
+				<section>
+					<h3>Browser support</h3>
+					<img src="./img/caniuse_canvas.png">
+				</section>
+				<section>
+					<h3>Alternate content</h3>
+					<pre>
+				<code>
+		<canvas id="stockGraph" width="150" height="150">
+			current stock price: $3.15 +0.15
+		</canvas>
+						  
+		<canvas id="clock" width="150" height="150">
+			<img src="images/clock.png" width="150" height="150" alt=""/>
+		</canvas>
+				</code>
+				</pre></section>
+				<section>
+					<h3>Canvas grid</h3>
+					<img src="./img/canvas_default_grid.png" width="400px">
+				</section>
+
+				<section>
+					<h3>Drawing rectangles</h3>
+					  <div style="padding-bottom: 20px;">
+                        <p>Draws a filled rectangle</p>
+					    <p style="background-color: rgb(118, 118, 118); width: 55%; margin: 0 auto;">fillRect(x, y, width, height)</p>
+					  </div>
+					<div style="padding-bottom: 20px;">
+						<p>Draws a rectangular outline</p>
+					    <p style="background-color: rgb(118, 118, 118); width: 55%; margin: 0 auto;">strokeRect(x, y, width, height)</p>
+					</div>
+					<div>
+						<p>Clears the specified rectangular area, making it fully transparent</p>
+					    <p style="background-color: rgb(118, 118, 118); width: 55%; margin: 0 auto;">clearRect(x, y, width, height)</p>
+					</div>
+				</section>
+
+				<section>
+					<h3>Rectangular shape example</h3>
+					<img src="./img/example.png" style="width: 30%;">
+					  <pre>
+						<code>
+						function draw() {
+							let canvas = document.getElementById('canvas');
+							if (canvas.getContext) {
+							  var ctx = canvas.getContext('2d');
+
+							  ctx.fillRect(25,25,100,100);
+							  ctx.clearRect(45,45,60,60);
+							  ctx.strokeRect(50,50,50,50);
+							}
+						}
+						</code>
+					  </pre>
+				</section>
+
+				<section>
+					<img src="./img/canvas_smiley.png" style="width: 22%; margin: 0;">
+					<pre style="margin: 0px; padding: 0; height: 480px; width: 1000px;"><code>
+			function draw() {
+			const canvas = document.getElementById("canvas");
+				if (canvas.getContext) {
+					const ctx = canvas.getContext("2d");
+					ctx.beginPath();
+					ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
+					ctx.moveTo(110, 75);
+					ctx.arc(75, 75, 35, 0, Math.PI, false); // Mouth (clockwise)
+					ctx.moveTo(65, 65);
+					ctx.arc(60, 65, 5, 0, Math.PI * 2, true); // Left eye
+					ctx.moveTo(95, 65);
+					ctx.arc(90, 65, 5, 0, Math.PI * 2, true); // Right eye
+					ctx.stroke();
+				}
+			}
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Applying styles and colors</h3>
+					<img src="./img/canvas_fillstyle.png">
+					<pre><code style="width: 110%;">
+			function draw() {
+				const ctx = document.getElementById('canvas').getContext('2d');
+				for (var i=0; i<6; i++){
+					for (let j=0; j < 6; j++) {
+					ctx.fillStyle = 'rgb(' + Math.floor(255-42.5*i) + `,` +
+										Math.floor(255-42.5*j) + `,0)`;
+					ctx.fillRect(j*25,i*25,25,25);
+					}
+				}
+			}
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Line styles</h3>
+					<div style="padding-bottom: 15px; border-top: 1px solid;">lineWidth = value</div>
+					<div style="padding-bottom: 15px;">lineCap = type</div>
+					<div style="padding-bottom: 15px;">lineJoin = type</div>
+					<div style="padding-bottom: 15px;">miterLimit = value</div>
+					<div style="padding-bottom: 15px;">getLineDash()</div>
+					<div style="padding-bottom: 15px;">setLineDash(segments)</div>
+					<div style="border-bottom: 1px solid;">lineDashOffset = value</div>
+				</section>
+
+				<section>
+					<h3>Basic animations steps</h3>
+					<ol>
+						<li>Clear the canvas </li>
+						<li>Save the canvas state</li>
+						<li>Draw animated shapes</li>
+						<li>Restore the canvas state</li>
+					</ol>
+				</section>
+				<section>
+					<h3>Controlling an animation</h3>
+					<ul>
+						<li>window.setInterval() / window.setTimeout()</li>
+						<li>window.requestAnimationFrame()</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Pixel manipulation</h3>
+					<img src="./img/imageD.png" style="margin: 0;">
+					<pre style="margin: 0;">
+					 <code style="margin: 0;">
+						const canvas = document.getElementById("canvas");
+						const ctx = canvas.getContext("2d");
+						const arr = new Uint8ClampedArray(40_000);
+						
+						// Fill the array with the same RGBA values
+						for (let i = 0; i < arr.length; i += 4) {
+						  arr[i + 0] = 0; // R value
+						  arr[i + 1] = 190; // G value
+						  arr[i + 2] = 0; // B value
+						  arr[i + 3] = 255; // A value
+						}
+
+						// Initialize a new ImageData object
+						let imageData = new ImageData(arr, 200);
+						
+						// Draw image data to the canvas
+						ctx.putImageData(imageData, 20, 20);
+					</code>
+				</pre>
+				</section>
+				<section>
+					<h3>Canvas or SVG?</h3>
+					<img src="./img/canvas_svg.png">
+				</section>
+				<section>
+					<h2>Thank you <br> for your attention!</h2>
+					<img src="./img/final.png" >
+				</section>
 			</div>
 		</div>
 
